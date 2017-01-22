@@ -8,6 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,16 +50,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void test3(View v){
-        timer.schedule(new MyTimerTask(),0,200);
+        timer.schedule(new MyTimerTask(),0,3000);
     }
     private class MyTimerTask extends TimerTask {
         int i;
         @Override
         public void run() {
-            Log.v("brad", "i = " + i++);
-            handler.sendEmptyMessage(i);
+            getLatLng();
         }
     }
+
+    private void getLatLng(){
+        //
+        try {
+            URL url = new URL("http://10.0.2.2:8080/BradWeb/Brad95.jsp?id=1");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.connect();
+            BufferedReader reader =
+                    new BufferedReader(
+                            new InputStreamReader(conn.getInputStream()));
+            StringBuffer sb = new StringBuffer(); String line = null;
+            while ((line = reader.readLine()) != null){
+                sb.append(line);
+            }
+            reader.close();
+            Log.v("brad", sb.toString());
+        }catch(Exception ee){
+            Log.v("brad", ee.toString());
+        }
+
+    }
+    public void test4(View v){
+        getLatLng();
+    }
+
 
     @Override
     public void finish() {
