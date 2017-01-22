@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv;
     private UIHnadler handler;
     private Timer timer;
+    private MyAsyncTask mt1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +119,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void test5(View v){
-        MyAsyncTask mt1 = new MyAsyncTask();
+        mt1 = new MyAsyncTask();
         mt1.execute();
+    }
+    public void test6(View v){
+        if (mt1 != null){
+            mt1.cancel(true);
+        }
     }
 
     private class MyAsyncTask extends AsyncTask<Void,Void,Void> {
@@ -130,7 +136,15 @@ public class MainActivity extends AppCompatActivity {
         }
         @Override
         protected Void doInBackground(Void... voids) {
-            Log.v("brad", "doInBackground");
+            for (int i=0; i<10; i++) {
+                Log.v("brad", "doInBackground");
+                publishProgress();
+                try {
+                    Thread.sleep(500);
+                }catch (InterruptedException ie){
+                    break;
+                }
+            }
             return null;
         }
         @Override
