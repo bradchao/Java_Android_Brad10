@@ -117,27 +117,36 @@ public class MainActivity extends AppCompatActivity {
             tv.setText("i = " + msg.what);
         }
     }
+    public void test5(View v){
+        MyAsyncTask mt1 = new MyAsyncTask();
+        mt1.execute();
+    }
 
     private class MyAsyncTask extends AsyncTask<Void,Void,Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            Log.v("brad", "onPreExecute");
         }
         @Override
         protected Void doInBackground(Void... voids) {
+            Log.v("brad", "doInBackground");
             return null;
         }
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
+            Log.v("brad", "onProgressUpdate");
         }
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            Log.v("brad", "onPostExecute");
         }
         @Override
         protected void onCancelled(Void aVoid) {
             super.onCancelled(aVoid);
+            Log.v("brad", "onCancelled");
         }
     }
 
