@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void test5(View v){
         mt1 = new MyAsyncTask();
-        mt1.execute();
+        mt1.execute("Brad","III","OK","Kevin");
     }
     public void test6(View v){
         if (mt1 != null){
@@ -128,39 +128,43 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class MyAsyncTask extends AsyncTask<Void,Void,Void> {
+    private class MyAsyncTask extends AsyncTask<String,Integer,String> {
+        int i;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.v("brad", "onPreExecute");
+            tv.setText("start");
         }
         @Override
-        protected Void doInBackground(Void... voids) {
-            for (int i=0; i<10; i++) {
-                Log.v("brad", "doInBackground");
-                publishProgress();
+        protected String doInBackground(String... names) {
+            String ret = "OK";
+            for (String name : names){
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                 }catch (InterruptedException ie){
+                    ret = "XX";
                     break;
                 }
+                Log.v("brad", name);
+                i++;
+                publishProgress(i, i*10, i*100);
             }
-            return null;
+            return ret;
         }
         @Override
-        protected void onProgressUpdate(Void... values) {
+        protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            Log.v("brad", "onProgressUpdate");
+            tv.setText(values[0] + ":" + values[1] + ":" + values[2]);
         }
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            Log.v("brad", "onPostExecute");
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            tv.setText(result);
         }
         @Override
-        protected void onCancelled(Void aVoid) {
-            super.onCancelled(aVoid);
-            Log.v("brad", "onCancelled");
+        protected void onCancelled(String result) {
+            super.onCancelled(result);
+            tv.setText(result);
         }
     }
 
